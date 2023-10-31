@@ -1,5 +1,5 @@
 import numpy as np
-from ..config import WINDOW_WIDTH as w, WINDOW_HEIGHT as h, MAP, SUBSTEP
+from ..config import WINDOW_WIDTH as w, WINDOW_HEIGHT as h, MAP, SUBSTEP, GRAVITY
 
 import logging
 
@@ -8,7 +8,7 @@ logger = logging.getLogger('debug')
 
 class VerletSolver:
     def __init__(self):
-        self.gravity = np.array([0., 1000.])
+        self.gravity = np.array([0., GRAVITY])
 
     def update(self, verlet_objects, dt):
         '''
@@ -67,6 +67,10 @@ class VerletSolver:
         '''
         if MAP == 'CIRCLE':
             self.apply_circle_constraint(verlet_objects)
+        elif MAP == 'RECTANGLE':
+            self.apply_rectangle_constraint(verlet_objects)
+        else:
+            raise EnvironmentError('MAP is not defined')
 
     def apply_circle_constraint(self, verlet_objects):
         '''
